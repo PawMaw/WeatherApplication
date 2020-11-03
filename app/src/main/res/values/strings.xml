@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">WeatherApplication</string>
+    <string name="city_name" />
+    <string name="cityName" />
+    <string name="refresh_date">20 April 2012, 20:08 PM</string>
+    <string name="weather_type">Clear Sky</string>
+    <string name="temperature">29°C</string>
+    <string name="min_temperature">Min Temp: 05:05 AM</string>
+    <string name="max_temperature">Max Temp: 05:05 PM</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunrise_time">06:40 AM</string>
+    <string name="sunset">Sunset</string>
+    <string name="sunset_time">06:40 AM</string>
+    <string name="wind">Wind</string>
+    <string name="wind_power">2.44</string>
+    <string name="pressure">Pressure</string>
+    <string name="pressure_power">06:40 AM</string>
+    <string name="humidity">Humidity</string>
+    <string name="humidity_power">06:40 AM</string>
+    <string name="error_msg">Извините, вашего города нет в WeatherAPI</string>
+    <string name="search">Search</string>
+</resources>
