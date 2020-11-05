@@ -24,11 +24,11 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    private val url = "https://raw.githubusercontent.com/aZolo77/citiesBase/master/cities.json"
+    private val citiesJsonUrl = "https://raw.githubusercontent.com/aZolo77/citiesBase/master/cities.json" // Json файл с списком городов
 
     val cities = ArrayList<CityModel>()
-    val displayList = ArrayList<CityModel>()
-    val newDisplayList = ArrayList<CityModel>()
+    val shownCityList = ArrayList<CityModel>()
+    val sortedShownCityList = ArrayList<CityModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +38,19 @@ class MainActivity : AppCompatActivity() {
         getCitiesFromServer(queue)
     }
 
+    /**
+     * Запрос на получение списка городов
+     */
     private fun getCitiesFromServer(queue: RequestQueue) {
         val stringRequest = StringRequest(
             Request.Method.GET,
-            url,
+            citiesJsonUrl,
             Response.Listener { response ->
                 cities.addAll(parseResponse(response))
-                displayList.addAll(cities)
+                shownCityList.addAll(cities)
                 saveIntoDB(cities)
                 loadFromDB()
-                val adapter = CitiesAdapter(displayList)
+                val adapter = CitiesAdapter(shownCityList)
                 recyclerViewId.adapter = adapter
                 val layoutManager = LinearLayoutManager(this)
                 recyclerViewId.layoutManager = layoutManager
@@ -59,6 +62,9 @@ class MainActivity : AppCompatActivity() {
         queue.add(stringRequest)
     }
 
+    /**
+     * Сохранение списка городов в память устройства
+     */
     private fun saveIntoDB(cities: List<CityModel>) {
         val realm = Realm.getDefaultInstance()
         realm.beginTransaction()
@@ -66,11 +72,18 @@ class MainActivity : AppCompatActivity() {
         realm.commitTransaction()
     }
 
+    /**
+     * Загрузка списка городов из памяти устройства
+     */
     private fun loadFromDB(): RealmResults<CityModel>? {
         var realm = Realm.getDefaultInstance()
+
         return realm.where(CityModel::class.java).findAll()
     }
 
+    /**
+     * Инициализация Realm для сохранения списка городов в памяти
+     */
     private fun initRealm() {
         Realm.init(this)
         val config = RealmConfiguration.Builder()
@@ -79,6 +92,9 @@ class MainActivity : AppCompatActivity() {
         Realm.setDefaultConfiguration(config)
     }
 
+    /**
+     * Обработка запроса
+     */
     private fun parseResponse(responseText: String): MutableList<CityModel> {
         var citiesList: MutableList<CityModel> = mutableListOf()
         val root = JSONObject(responseText)
@@ -96,9 +112,13 @@ class MainActivity : AppCompatActivity() {
             city.name = cityText
             citiesList.add(city)
         }
+
         return citiesList
     }
 
+    /**
+     * Реализация поиска среди списка городов
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         val menuItem = menu!!.findItem(R.id.searchCity)
@@ -106,29 +126,30 @@ class MainActivity : AppCompatActivity() {
             val searchView = menuItem.actionView as SearchView
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+
                     return true
                 }
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText!!.isNotEmpty()) {
                         val search = newText.toLowerCase(Locale.getDefault())
-                        displayList.forEach() {
+                        shownCityList.forEach() {
                             if (it.name.toLowerCase(Locale.getDefault()).contains(search)) {
-                                newDisplayList.add(it)
+                                sortedShownCityList.add(it)
                             }
                         }
-                        if (newDisplayList.isEmpty()) {
-                            displayList.clear()
-                            displayList.addAll(cities)
+                        if (sortedShownCityList.isEmpty()) {
+                            shownCityList.clear()
+                            shownCityList.addAll(cities)
                             recyclerViewId.adapter!!.notifyDataSetChanged()
                         } else {
-                            displayList.clear()
-                            displayList.addAll(newDisplayList)
-                            newDisplayList.clear()
+                            shownCityList.clear()
+                            shownCityList.addAll(sortedShownCityList)
+                            sortedShownCityList.clear()
                             recyclerViewId.adapter!!.notifyDataSetChanged()
                         }
                     } else {
-                        displayList.clear()
-                        displayList.addAll(cities)
+                        shownCityList.clear()
+                        shownCityList.addAll(cities)
                         recyclerViewId.adapter!!.notifyDataSetChanged()
                     }
 
@@ -136,10 +157,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
-        return super.onCreateOptionsMenu(menu)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+        return super.onCreateOptionsMenu(menu)
     }
 }

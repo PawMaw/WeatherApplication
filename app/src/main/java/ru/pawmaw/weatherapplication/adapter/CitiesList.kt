@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.pawmaw.weatherapplication.DetailActivity
-import ru.pawmaw.weatherapplication.DetailActivity.Companion.CAT_FACT_TEXT_TAG
+import ru.pawmaw.weatherapplication.DetailActivity.Companion.CUSTOM_CITY_TAG
 import ru.pawmaw.weatherapplication.R
 import ru.pawmaw.weatherapplication.models.CityModel
 
@@ -42,7 +42,7 @@ class CityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun openDetailActivity (context: Context, cityModel: CityModel) {
         val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(CAT_FACT_TEXT_TAG, cityModel.name)
+        intent.putExtra(CUSTOM_CITY_TAG, cityModel.name)
         context.startActivity(intent)
     }
 }

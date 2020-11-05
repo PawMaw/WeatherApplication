@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">WeatherApplication</string>
-    <string name="city_name" />
+    <string name="app_name">WeatherApp</string>
     <string name="cityName" />
     <string name="refresh_date">20 April 2012, 20:08 PM</string>
     <string name="weather_type">Clear Sky</string>

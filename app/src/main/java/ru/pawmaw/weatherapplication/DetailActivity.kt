@@ -16,20 +16,24 @@ import java.util.*
 
 class DetailActivity : AppCompatActivity() {
 
-    var day = 0;
-    var weatherArray = JSONArray()
+    val API_KEY: String = "e424c28c9f8068545f5132d0f335d586" // API ключ необходимый для запроса
+    var day = 0 // Итератор дней для выбора
+    var weatherDataArray = JSONArray() // Массив с данными о погоде
+
     companion object {
-        const val CAT_FACT_TEXT_TAG = "ru.pawmaw.weatherapplication.city_tag"
+        const val CUSTOM_CITY_TAG = "ru.pawmaw.weatherapplication.city_tag" // Константа для ведения журнала
     }
 
-    val API: String = "e424c28c9f8068545f5132d0f335d586"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.city_detail)
-        intent?.extras?.getString(CAT_FACT_TEXT_TAG)?.let { setupActionBar(it) }
-        intent?.extras?.getString(CAT_FACT_TEXT_TAG)?.let { weatherTask(it).execute()}
+        intent?.extras?.getString(CUSTOM_CITY_TAG)?.let { setupActionBar(it) }
+        intent?.extras?.getString(CUSTOM_CITY_TAG)?.let { cityWeatherData(it).execute()}
     }
 
+    /**
+     * Пользовательский ActionBar с названием города на детальной странице
+     */
     private fun setupActionBar(cityName : String) {
         supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
@@ -43,8 +47,13 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    inner class weatherTask(cityName: String) : AsyncTask<String, Void, String>() {
-        val CITY : String = cityName;
+    /**
+     * Внутренний класс для обработки запросов погоды для конкретного города
+     */
+    inner class cityWeatherData(cityName: String) : AsyncTask<String, Void, String>() {
+
+        val CITY : String = cityName // Название города для запроса
+
         override fun onPreExecute() {
             super.onPreExecute()
             findViewById<ProgressBar>(R.id.loader).visibility = View.VISIBLE
@@ -56,31 +65,30 @@ class DetailActivity : AppCompatActivity() {
             val prevDateButton = findViewById<ImageView>(R.id.prev_date_button)
             prevDateButton.setOnClickListener(prevDateListener)
         }
+
         override fun doInBackground(vararg params: String?): String? {
-            var response:String?
-            try{
-                response = URL("https://api.openweathermap.org/data/2.5/forecast?q=$CITY&units=metric&appid=$API").readText(
-                    Charsets.UTF_8
-                )
-            }catch (e: Exception){
-                response = null
+            return try{
+                URL("https://api.openweathermap.org/data/2.5/forecast?q=$CITY&units=metric&appid=$API_KEY").readText(Charsets.UTF_8)
+            } catch (e: Exception) {
+                null
             }
-            return response
         }
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             try {
                 val jsonObj = JSONObject(result)
-                weatherArray = jsonObj.getJSONArray("list")
-                println(weatherArray.length())
-                getWeatherForSelectedDay(weatherArray[day] as JSONObject)
+                weatherDataArray = jsonObj.getJSONArray("list")
+                getWeatherForSelectedDay(weatherDataArray[day] as JSONObject)
             } catch (e: Exception) {
                 findViewById<ProgressBar>(R.id.loader).visibility = View.GONE
                 findViewById<TextView>(R.id.errorText).visibility = View.VISIBLE
             }
         }
 
+        /**
+         * Обработка JSON элемента массива для вывода на детальной странице
+         */
         private fun getWeatherForSelectedDay (jsonObj : JSONObject) {
             try {
                 val main = jsonObj.getJSONObject("main")
@@ -110,30 +118,38 @@ class DetailActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.errorText).visibility = View.VISIBLE
             }
         }
+
+        /**
+         * Listener для кнопки следующего временного отрезка погоды для города
+         */
         private val nextDateListener = View.OnClickListener {
             when {
                 day == 0 -> {
                     findViewById<ImageView>(R.id.prev_date_button).visibility = View.VISIBLE
                     day++
-                    getWeatherForSelectedDay(weatherArray[day] as JSONObject)
+                    getWeatherForSelectedDay(weatherDataArray[day] as JSONObject)
                 }
-                day < weatherArray.length() - 1 -> {
+                day < weatherDataArray.length() - 1 -> {
                     day++
-                    getWeatherForSelectedDay(weatherArray[day] as JSONObject)
-                    if (day == weatherArray.length() - 1) {
+                    getWeatherForSelectedDay(weatherDataArray[day] as JSONObject)
+                    if (day == weatherDataArray.length() - 1) {
                         findViewById<ImageView>(R.id.next_date_button).visibility = View.INVISIBLE
                     }
                 }
             }
         }
+
+        /**
+         * Listener для кнопки предыдущего временного отрезка погоды для города
+         */
         private val prevDateListener = View.OnClickListener {
             when {
                 day == 0 -> {
                     findViewById<ImageView>(R.id.prev_date_button).visibility = View.INVISIBLE
                 }
-                day > 0 && day < weatherArray.length() -> {
+                day > 0 && day < weatherDataArray.length() -> {
                     day--
-                    getWeatherForSelectedDay(weatherArray[day] as JSONObject)
+                    getWeatherForSelectedDay(weatherDataArray[day] as JSONObject)
                     if (day == 0) {
                         findViewById<ImageView>(R.id.prev_date_button).visibility = View.INVISIBLE
                     } else {
