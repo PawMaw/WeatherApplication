@@ -35,17 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initRealm()
         val queue = Volley.newRequestQueue(this)
-        getCitiesFromServer(queue);
-
-        val cities = loadFromDB()
-        if (cities != null) {
-            displayList.addAll(cities)
-            val adapter = CitiesAdapter(displayList)
-            recyclerViewId.adapter = adapter
-
-            val layoutManager = LinearLayoutManager(this)
-            recyclerViewId.layoutManager = layoutManager
-        }
+        getCitiesFromServer(queue)
     }
 
     private fun getCitiesFromServer(queue: RequestQueue) {
@@ -53,8 +43,14 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET,
             url,
             Response.Listener { response ->
-                val citiesList = parseResponse(response)
-                saveIntoDB(citiesList)
+                cities.addAll(parseResponse(response))
+                displayList.addAll(cities)
+                saveIntoDB(cities)
+                loadFromDB()
+                val adapter = CitiesAdapter(displayList)
+                recyclerViewId.adapter = adapter
+                val layoutManager = LinearLayoutManager(this)
+                recyclerViewId.layoutManager = layoutManager
             },
             Response.ErrorListener {
                 Toast.makeText( this, "Ошибка запроса", Toast.LENGTH_SHORT).show()
@@ -104,7 +100,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        cities.addAll(displayList)
         menuInflater.inflate(R.menu.menu, menu)
         val menuItem = menu!!.findItem(R.id.searchCity)
         if (menuItem != null) {
@@ -121,12 +116,17 @@ class MainActivity : AppCompatActivity() {
                                 newDisplayList.add(it)
                             }
                         }
-                        displayList.clear()
-                        displayList.addAll(newDisplayList)
-                        newDisplayList.clear()
-                        recyclerViewId.adapter!!.notifyDataSetChanged()
-                    }
-                    else {
+                        if (newDisplayList.isEmpty()) {
+                            displayList.clear()
+                            displayList.addAll(cities)
+                            recyclerViewId.adapter!!.notifyDataSetChanged()
+                        } else {
+                            displayList.clear()
+                            displayList.addAll(newDisplayList)
+                            newDisplayList.clear()
+                            recyclerViewId.adapter!!.notifyDataSetChanged()
+                        }
+                    } else {
                         displayList.clear()
                         displayList.addAll(cities)
                         recyclerViewId.adapter!!.notifyDataSetChanged()
@@ -136,7 +136,6 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
-
         return super.onCreateOptionsMenu(menu)
     }
 

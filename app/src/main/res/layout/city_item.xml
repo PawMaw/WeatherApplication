@@ -6,9 +6,7 @@
     android:padding="8dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
-    >
-
+    app:cardElevation="8dp">
     <LinearLayout
         android:padding="10dp"
         android:orientation="vertical"
@@ -25,5 +23,4 @@
             android:fontFamily="@font/font">
         </TextView>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

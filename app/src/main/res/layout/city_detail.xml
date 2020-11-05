@@ -25,6 +25,7 @@
                 android:gravity="center">
                 <TextView
                     android:id="@+id/updated_at"
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
@@ -36,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="10sp"
                 android:layout_centerInParent="true">
                 <TextView
                     android:layout_marginBottom="10sp"
@@ -45,9 +47,9 @@
                     android:layout_gravity="center_horizontal|top"
                     android:text="@string/temperature"
                     android:textColor="#159cbd"
-                    android:textSize="70sp" />
+                    android:textSize="70sp"/>
                 <TextView
-                    android:layout_marginBottom="130sp"
+                    android:layout_marginBottom="40sp"
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,6 +57,29 @@
                     android:layout_gravity="center"
                     android:text="@string/weather_type"
                     android:textColor="#159cbd"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="80sp">
+                    <ImageView
+                        android:id="@+id/prev_date_button"
+                        android:src="@drawable/prev_date"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:textColor="#159cbd"
+                        android:visibility="invisible"/>
+                    <Space
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/next_date_button"
+                        android:src="@drawable/next_date"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:textColor="#159cbd"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,83 +101,7 @@
                         android:text="@string/max_temperature"
                         android:textColor="#159cbd"/>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-                    <Space
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:layout_marginTop="20sp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:background="#0b5365">
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/sunrise" />
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:text="@string/sunrise"
-                            android:textColor="#159cbd"/>
-                        <TextView
-                            android:id="@+id/sunrise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sunrise_time"
-                            android:textColor="#159cbd"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                    <Space
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:layout_marginTop="20sp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:background="#0b5365">
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/sunset" />
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:text="@string/sunset"
-                            android:textColor="#159cbd"/>
-                        <TextView
-                            android:id="@+id/sunset"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sunset_time"
-                            android:textColor="#159cbd"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                    <Space
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/detailsContainer"
                 android:layout_width="match_parent"
@@ -164,7 +113,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3">
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
