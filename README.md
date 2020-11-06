@@ -14,7 +14,10 @@
 [OpenWeather]: <https://openweathermap.org/>
 
 ### Установка
-Для установки проекта требуется просто открыть его в Android Studio.
+Для установки проекта требуется просто открыть его в Android Studio и вставить ваш API Key от Weather Api в Detail Activity.
+
+![alt text](screen4.jpg "Место для ввода API ключа")
+
 Для тестирования потребуется устройство с операционной системой Android ```>=8.0.0```
 
 ### Обновления
