@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:textColor="#159cbd"
-    android:fontFamily="@font/font">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewId"
+    android:background="@color/custom_dark_blue">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="16dp"
-        android:background="#073642"
-        android:textColor="#159cbd"
-        android:fontFamily="@font/font">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:background="@color/custom_dark_blue">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0sp"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

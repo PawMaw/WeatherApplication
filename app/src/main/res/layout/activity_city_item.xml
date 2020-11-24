@@ -9,17 +9,17 @@
     app:cardElevation="8dp">
     <LinearLayout
         android:padding="10dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0b5365">
+        android:background="@color/custom_medium_blue">
         <TextView
             android:text="@string/cityName"
             android:id="@+id/cityNameId"
             android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#159cbd"
+            android:textColor="@color/custom_light_blue2"
             android:fontFamily="@font/font">
         </TextView>
     </LinearLayout>

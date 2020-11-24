@@ -1,4 +1,4 @@
-package ru.pawmaw.weatherapplication
+package ru.pawmaw.weatherappnew
 
 import org.junit.Test
 

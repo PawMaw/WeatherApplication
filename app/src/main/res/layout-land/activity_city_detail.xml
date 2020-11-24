@@ -1,96 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity">
+    tools:context=".ui.CityDetailActivity">
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="25dp"
-        android:background="#073642">
+        android:background="@color/custom_dark_blue">
         <RelativeLayout
             android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">
             <LinearLayout
-                android:id="@+id/addressContainer"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/updated_at"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="#159cbd"
-                    android:text="@string/refresh_date"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/overviewContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="10sp"
-                android:layout_centerInParent="true">
-                <TextView
-                    android:layout_marginBottom="10sp"
-                    android:id="@+id/temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|top"
-                    android:text="@string/temperature"
-                    android:textColor="#159cbd"
-                    android:textSize="70sp"/>
-                <TextView
-                    android:layout_marginBottom="40sp"
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:layout_gravity="center"
-                    android:text="@string/weather_type"
-                    android:textColor="#159cbd"/>
+                android:orientation="horizontal"
+                android:weightSum="3">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1.5"
                     android:gravity="center"
-                    android:layout_marginBottom="80sp">
-                    <ImageView
-                        android:id="@+id/prev_date_button"
-                        android:src="@drawable/prev_date"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:textColor="#159cbd"
-                        android:visibility="invisible"/>
-                    <Space
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"/>
-                    <ImageView
-                        android:id="@+id/next_date_button"
-                        android:src="@drawable/next_date"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:textColor="#159cbd"/>
+                    android:padding="8dp"
+                    android:background="@color/custom_medium_blue">
+                    <TextView
+                        android:id="@+id/updated_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/custom_light_blue2"
+                        android:text="@string/refresh_date"/>
                 </LinearLayout>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:background="@color/custom_medium_blue">
                     <TextView
                         android:id="@+id/temp_min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/min_temperature"
-                        android:textColor="#159cbd"/>
+                        android:textColor="@color/custom_light_blue2"/>
                     <Space
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"/>
@@ -99,8 +61,53 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/max_temperature"
-                        android:textColor="#159cbd"/>
+                        android:textColor="@color/custom_light_blue2"/>
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/prev_date_button"
+                    android:src="@drawable/prev_date"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:textColor="@color/custom_light_blue2"
+                    android:visibility="invisible"/>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|top"
+                        android:text="@string/temperature"
+                        android:textColor="@color/custom_light_blue2"
+                        android:textSize="50sp"/>
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_gravity="center"
+                        android:text="@string/weather_type"
+                        android:textColor="@color/custom_light_blue2"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/next_date_button"
+                    android:src="@drawable/next_date"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:textColor="@color/custom_light_blue2"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/detailsContainer"
@@ -116,31 +123,29 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:background="#0b5365">
+                        android:background="@color/custom_medium_blue">
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/wind" />
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="10dp"/>
+                            android:src="@drawable/wind"
+                            android:layout_marginEnd="5sp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/wind"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"
+                            android:layout_marginEnd="5sp"/>
                         <TextView
                             android:id="@+id/wind"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/wind_power"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"/>
                     </LinearLayout>
                     <Space
                         android:layout_width="10dp"
@@ -148,31 +153,29 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:background="#0b5365">
+                        android:background="@color/custom_medium_blue">
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/pressure" />
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="10dp"/>
+                            android:src="@drawable/pressure"
+                            android:layout_marginEnd="5sp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/pressure"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"
+                            android:layout_marginEnd="5sp"/>
                         <TextView
                             android:id="@+id/pressure"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/pressure_power"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"/>
                     </LinearLayout>
                     <Space
                         android:layout_width="10dp"
@@ -180,15 +183,15 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:background="#0b5365">
+                        android:background="@color/custom_medium_blue">
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/humidity"/>
+                            android:src="@drawable/humidity"
+                            android:layout_marginEnd="5sp"/>
                         <Space
                             android:layout_width="wrap_content"
                             android:layout_height="10dp"/>
@@ -197,14 +200,15 @@
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/humidity"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"
+                            android:layout_marginEnd="5sp"/>
                         <TextView
                             android:id="@+id/humidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:text="@string/humidity_power"
-                            android:textColor="#159cbd"/>
+                            android:textColor="@color/custom_light_blue2"/>
                     </LinearLayout>
                     <Space
                         android:layout_width="wrap_content"
@@ -226,6 +230,6 @@
             android:visibility="gone"
             android:textSize="15sp"
             android:text="@string/error_msg"
-            android:textColor="#159cbd"/>
+            android:textColor="@color/custom_light_blue2"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

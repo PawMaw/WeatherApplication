@@ -1,132 +1,79 @@
-package ru.pawmaw.weatherapplication
+package ru.pawmaw.weatherappnew
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
-import ru.pawmaw.weatherapplication.adapter.CitiesAdapter
-import ru.pawmaw.weatherapplication.models.CityModel
+import ru.pawmaw.weatherappnew.data.database.Database
+import ru.pawmaw.weatherappnew.data.holders.Cities
+import ru.pawmaw.weatherappnew.data.models.CityModel
+import ru.pawmaw.weatherappnew.data.database.CitiesData
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private val citiesJsonUrl = "https://raw.githubusercontent.com/aZolo77/citiesBase/master/cities.json" // Json файл с списком городов
-
-    val cities = ArrayList<CityModel>()
-    val shownCityList = ArrayList<CityModel>()
-    val sortedShownCityList = ArrayList<CityModel>()
+    private val cities = ArrayList<CityModel>()
+    private val shownCityList = ArrayList<CityModel>()
+    private val sortedShownCityList = ArrayList<CityModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initRealm()
-        val queue = Volley.newRequestQueue(this)
-        getCitiesFromServer(queue)
+        Database().initRealm(this)
+        getCitiesFromServer(this, recyclerViewId)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Database().loadFromDB()
     }
 
     /**
      * Запрос на получение списка городов
      */
-    private fun getCitiesFromServer(queue: RequestQueue) {
+    private fun getCitiesFromServer(context: Context, recyclerViewId : RecyclerView) {
+        val queue = Volley.newRequestQueue(context)
         val stringRequest = StringRequest(
             Request.Method.GET,
             citiesJsonUrl,
             Response.Listener { response ->
-                cities.addAll(parseResponse(response))
+                cities.addAll(CitiesData().parseResponse(response))
                 shownCityList.addAll(cities)
-                saveIntoDB(cities)
-                loadFromDB()
-                val adapter = CitiesAdapter(shownCityList)
+                Database().saveIntoDB(cities)
+                val adapter =
+                    Cities(shownCityList)
                 recyclerViewId.adapter = adapter
-                val layoutManager = LinearLayoutManager(this)
+                val layoutManager = LinearLayoutManager(context)
                 recyclerViewId.layoutManager = layoutManager
             },
             Response.ErrorListener {
-                Toast.makeText( this, "Ошибка запроса", Toast.LENGTH_SHORT).show()
+                Toast.makeText( context, "Ошибка запроса", Toast.LENGTH_SHORT).show()
             }
         )
+
         queue.add(stringRequest)
-    }
-
-    /**
-     * Сохранение списка городов в память устройства
-     */
-    private fun saveIntoDB(cities: List<CityModel>) {
-        val realm = Realm.getDefaultInstance()
-        realm.beginTransaction()
-        realm.copyToRealm(cities)
-        realm.commitTransaction()
-    }
-
-    /**
-     * Загрузка списка городов из памяти устройства
-     */
-    private fun loadFromDB(): RealmResults<CityModel>? {
-        var realm = Realm.getDefaultInstance()
-
-        return realm.where(CityModel::class.java).findAll()
-    }
-
-    /**
-     * Инициализация Realm для сохранения списка городов в памяти
-     */
-    private fun initRealm() {
-        Realm.init(this)
-        val config = RealmConfiguration.Builder()
-            .deleteRealmIfMigrationNeeded()
-            .build()
-        Realm.setDefaultConfiguration(config)
-    }
-
-    /**
-     * Обработка запроса
-     */
-    private fun parseResponse(responseText: String): MutableList<CityModel> {
-        var citiesList: MutableList<CityModel> = mutableListOf()
-        val root = JSONObject(responseText)
-        val ja = root.getJSONArray("city")
-        for(index in 0 until ja.length()) {
-            val jsonObject = ja.getJSONObject(index)
-            val cityId = jsonObject.getString("city_id")
-            val countryId = jsonObject.getString("country_id")
-            val regionId = jsonObject.getString("region_id")
-            val cityText = jsonObject.getString("name")
-            val city = CityModel()
-            city.city_id = cityId
-            city.country_id = countryId
-            city.region_id = regionId
-            city.name = cityText
-            citiesList.add(city)
-        }
-
-        return citiesList
     }
 
     /**
      * Реализация поиска среди списка городов
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        val menuItem = menu!!.findItem(R.id.searchCity)
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val menuItem = menu!!.findItem(R.id.app_bar_search)
         if (menuItem != null) {
             val searchView = menuItem.actionView as SearchView
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-
                     return true
                 }
                 override fun onQueryTextChange(newText: String?): Boolean {
@@ -161,3 +108,5 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 }
+
+

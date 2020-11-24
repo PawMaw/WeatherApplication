@@ -1,4 +1,4 @@
-package ru.pawmaw.weatherapplication.models
+package ru.pawmaw.weatherappnew.data.models
 
 import io.realm.RealmObject;
 
